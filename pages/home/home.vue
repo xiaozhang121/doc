@@ -7,19 +7,26 @@
 <script>
 	import qbFooter from "@/components/qb-footer.vue"
 	import config from '../../common/config/config.js'
+	import {apiArticleList} from '../../api/api.js'
+	import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	import {
 		mapState,
 		mapMutations
 	} from 'vuex';
 	export default {
 		components: {
-			qbFooter
+			qbFooter,
+			uniPopup
 		},
-		data() {
-			return {
-				
-			}
+		created() {
+			this.get(),
+			this.log()
 		},
+		data()  {
+		            return {
+		               showpop:false
+		            }
+		        },
 		computed: {
 		},
 		onLoad(options) {
@@ -53,9 +60,29 @@
 		onReady() {
 			
 		},
-		methods: {
-			
-		},
+		  methods:{
+		            yearChange:function(e){
+		                console.log(e)
+		                //获得对象的 detail的 value
+		                //通过数组的下标改变显示在页面的值
+		                this.yearsIndex = e.detail.value;
+		            },
+					async get(){
+						var res = await apiArticleList();
+						console.log(res)
+					},
+					log(){
+						uni.authorize({
+						    scope: 'scope.userInfo',
+						    success(res) {
+						        uni.getUserInfo()
+						    }
+						})
+					},
+					open(){
+						this.$refs.popup.open()
+					}
+		        },
 		onPullDownRefresh() {
 			
 		}
@@ -63,10 +90,9 @@
 	}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 	.home {
 		min-height: 100%;
-
 		
 	}
 	

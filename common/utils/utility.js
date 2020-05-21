@@ -189,7 +189,7 @@ export default {
 		*	message 提示类型 String
 		 */
 		let str_temp;
-		const emojiRegex = require('emoji-regex');
+		//const emojiRegex = require('emoji-regex');
 		const regex = emojiRegex();
 		const match = regex.exec(str);
 		switch(type) {

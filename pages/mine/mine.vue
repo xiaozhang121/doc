@@ -1,7 +1,7 @@
 <template>
 	<view class="mine">
 		
-		<qb-footer :choose="2"></qb-footer>
+		<qb-footer :choose="1"></qb-footer>
 	</view>
 </template>
 

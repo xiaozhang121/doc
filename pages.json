@@ -18,6 +18,12 @@
 			"style": {
 				"navigationBarTitleText": "添加客户"
 			}
+		},
+		{
+			"path": "pages/customertag/customertag",
+			"style": {
+				"navigationBarTitleText": "客户标签"
+			}
 		}
     ],
 	"tabBar": {

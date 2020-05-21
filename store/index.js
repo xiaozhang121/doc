@@ -22,7 +22,10 @@ const store = new Vuex.Store({
 		},
 		cart_item: null, //下单缓存
 		acla_time: 300, // 观看时长超过5min 5 * 60
-		room_id: '' // 直播房间id
+		room_id: '', // 直播房间id
+		
+		tag:[], //添加标签模块的标签传递
+		form:{} //添加客户模块的客户信息缓存
 	},
 	mutations: {
 		login(state, provider) {
@@ -50,6 +53,14 @@ const store = new Vuex.Store({
 		},
 		setRoomId(state, provider) {
 			state.room_id = provider
+		},
+		// 添加标签模块的标签传递
+		addtag(state,newval){
+			state.tag = newval
+		},
+		// 添加客户模块的客户信息缓存
+		savecustomer(state,newval){
+			state.form = newval
 		}
 	},
 	getters: { // store的计算属性,相当于页面中的computed

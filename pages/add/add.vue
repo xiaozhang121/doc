@@ -19,8 +19,8 @@
 			<view class="add_inp">
 			   <text view class="title">性别</text>
 			    <view class="uni-input">
-			       <label class="radio"><radio value="r1" checked="true" style="transform:scale(0.7);" :checked="sex===0" @click="radio(0)"/>男</label>
-			       <label class="radio" style="margin-left: 80rpx;"><radio style="transform:scale(0.7);" :checked="sex===1" value="r2" @click="radio(1)"/>女</label>
+			       <label class="radio" style="margin-right: 140rpx;"><image :src="sex==0?active:none" class="radio_man" @click="radio(0)"></image> 男</label>
+				    <label class="radio"><image :src="sex==1?active:none"  @click="radio(1)"></image> 女</label>
 			     </view>
 			</view>
 			<view class="add_inp">
@@ -60,19 +60,19 @@
 			  			</view>
 			  		</view>
 					<view class="tag">
-						<view class="title">
+						<view class="title" @click="addtag">
 							客户标签
-							<image src="../../static/images/Chevron备份%202@2x.png" mode="" class="point"></image>
+							<image src="../../static/images/Chevron备份%202@2x.png" mode="" class="point" @click="addtag"></image>
 						</view>
-						<view class="tag_sel">
+						<view class="tag_sel" v-if="tagarr.length!=0">
 							<view class="tag_one">
-								白金会员
+								{{tagarr[0]}}
 							</view>
 							<view class="tag_two">
-								潜力
+								{{tagarr[1]}}
 							</view>
 							<view class="tag_three">
-								洽谈
+								{{tagarr[2]}}
 							</view>
 						</view>
 					</view>
@@ -84,7 +84,7 @@
 			</view>
 			<view class="quil">
 				 <textarea  maxlength=50 @input = "descInput" v-model="descirbe" placeholder="请输入您的内容~"/>
-				 <view class="num">{{remnant}}/50</view>
+				 <view class="num"><span :class="remnant==0?'grey':''">{{remnant}}</span>/50</view>
 			</view>
 			<button type="primary" @click="save">保存</button>
 		</view>
@@ -96,12 +96,29 @@
 		components:{
 		
 		},
+		onShow() {
+			//获取选择的标签
+			this.tagarr = this.$store.state.tag;
+			//判断有没有缓存
+			this.name = this.$store.state.form.name; //名字
+			this.phone = this.$store.state.form.phone; ///手机
+			this.head = this.$store.state.form.head; //头像
+			this.sex = this.$store.state.form.sex; //性别
+			this.card = this.$store.state.form.card; //身份证
+			this.mail = this.$store.state.form.mail; //邮箱
+			this.address = this.$store.state.form.address; //地址
+			this.descirbe = this.$store.state.form.describe; //备注
+			this.date = this.$store.state.form.date; //生日
+			this.remnant = this.$store.state.form.remnant;//字数限制
+		},
+		created() {
+		},
 		data(){
 			return {
 				title: 'picker',
 				index: 0,
-				date: '', //生日
 				remnant:0,
+				date: '', //生日
 				head:'', //头像
 				sex:0, //性别
 				name:'', //名字
@@ -109,7 +126,10 @@
 				card:'', //身份证
 				mail:'', //邮箱
 				address:'', //地址
-				descirbe: ''//备注
+				descirbe: '',//备注
+				tagarr:[],//传过来的tag
+				none: '../../static/images/danxuan-2@2x.png',//单选选中
+				active:'../../static/images/danxuan@2x.png'//单选没选中
 				
 			}
 		},
@@ -159,11 +179,21 @@
 					 //性别选择单选
 					 radio(e){
 						 this.sex = e
+						 console.log(this.sex)
 					 },
 					 //保存上传
 					 save(){
 						 // console.log(this.head,this.card,this.sex,this.phone,this.mail,this.address,this.descirbe)
 						 // console.log(this.date)
+					 },
+					 //跳转添加客户标签
+					 addtag(){
+						 //将之前所有信息存入vuex中
+						 this.form = {name:this.name,head:this.head,sex:this.sex,phone:this.phone,card:this.card,mail:this.mail,address:this.address,describe:this.descirbe,date:this.date,remnant:this.remnant}
+						 this.$store.commit('savecustomer',this.form)
+						uni.navigateTo({
+							url: "/pages/customertag/customertag"
+						})
 					 }
 			}
 	}
@@ -223,6 +253,14 @@
 				padding-right: 30rpx;
 				box-sizing: border-box;
 				position: relative;
+				.radio {
+					image{
+						width: 36rpx;
+						height: 36rpx;
+						vertical-align: middle;
+						margin-right: 20rpx;
+					}
+				}
 				.cir {
 					width: 100rpx;
 					height: 100rpx;
@@ -356,6 +394,9 @@
 				right: 3%;
 				bottom: 5%;
 				font-size: 28rpx;
+				.grey{
+					color: #C2C2C2;
+				}
 			}
 		}
 		button {
